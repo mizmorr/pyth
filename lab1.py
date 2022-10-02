@@ -1,9 +1,10 @@
+import math
 fst = int (input ('fst = '))
 snd = int (input ('snd = '))
 thrd = int (input ('thrd = '))
 
-res = fst + snd +thrd
+res = (fst + snd +thrd)/2
 
-if  res%2==0: 
-    print ('result = ',res/2)
-else: print('result = ',res/2+0.5) 
+print(math.ceil(res))
+input()
+l = [i for i in range(5)]
