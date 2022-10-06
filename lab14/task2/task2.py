@@ -1,7 +1,7 @@
 from random import randint
 import tkinter
-keys = open("task2/keys.txt","r")
-vals = open("task2/vals.txt","r")
+keys = open("keys.txt","r")
+vals = open("vals.txt","r")
 lkeys = keys.readlines()
 lvals=vals.readlines()
 
