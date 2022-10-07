@@ -20,13 +20,13 @@ def btnclick():
             counter.set(counter.get()+1)
         mes.place(x=205, y = 160)
     else:
-        mes.configure(text="Ты проиграл!",fg='black',bg='red')
-        mes.place(x=205, y = 160)
+        mes2.place(x=180, y = 200)
         btn.configure(state='disabled')
 def surrender():
     btn.configure(state='disabled')
     mes.configure(text="Слово - "+str(d[list(d.keys())[i]]),width=250,fg='red')
     mes.place(x=170, y = 160)
+    mes2.place(x=180, y = 200)
 def cleart(a): 
     return (a.replace("\t",' '))
 def strformatter(a):
@@ -48,10 +48,11 @@ for i in range(len(lkeys)):
 window=tkinter.Tk(className="task")
 window.geometry("500x250")
 mes = tkinter.Message(window,text="Верно!",width=100,fg='green',font=('Arial,15'))
+mes2 = tkinter.Message(window,text="Ты проиграл!",fg='black',bg='red',font=('Arial,15'),width=200)
+
 i=randint(0,len(list(d.keys()))-1)
 var = tkinter.StringVar()
 var="Слово: "+list(d.keys())[i]
-rightness="test"
 lab=tkinter.Label(text=var, font=('Arial', 15),width=50,height=3)
 lab.pack()
 frame = tkinter.Frame(window)
