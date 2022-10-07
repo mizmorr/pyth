@@ -1,7 +1,7 @@
 from tkinter import *
 import tkinter
 def texttohtml(a):    
-    with open("out.html", "a") as e:
+    with open("task3/out.html", "a") as e:
         if a.count('\n')==0:
             e.write("<pre>"+a+"</pre> <br>\n")
         else:
@@ -10,7 +10,7 @@ def texttohtml(a):
     mes=Message(window,text="Yes",fg='green')
     mes.place(x=130,y=115)
 def writeintxt(a):
-    out=open("out.txt","w")
+    out=open("task3/out.txt","w")
     for line in a:
         out.write(line)
     out.close()
