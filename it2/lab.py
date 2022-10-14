@@ -38,17 +38,25 @@ class DictBook():
         if answer == 'no': return
         elif answer == 'y':
             pasw=""
-            while pasw!='y' :
-                pasw=input("password:\n")
-            self.writings.clear()       
-            print("dict is clear..")
+            flag=False
+            while flag!=True:
+                pasw=input("password or exit:\n")
+                if pasw =='y' or pasw =='exit':
+                    flag=True
+            if pasw=='y':
+                self.writings.clear()       
+                print("dict is clear..")
+            else:
+                print("exit..")
+                return
         else:
             return
 d=DictBook('first')
+d.make_a_note('qu','qusurname','02,03,2006')
 d.make_a_note('ivan','ivanov','02,02,2002')
-d.make_a_note('ivan2','ivanov2','03,02,2002')
-d.make_a_note('alex','alexsurn','02,04,05')
-d.make_a_note('zednul','zedsurn','02,03,2005')
+d.make_a_note('oleg','olegsurname','03,02,1997')
+d.make_a_note('alex','alexsurname','02,04,2005')
+d.make_a_note('max','maxsurname','05,03,1995')
 d.print_all_writings()
 d.sort_by_name()
 d.print_all_writings()
