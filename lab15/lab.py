@@ -138,7 +138,6 @@ entspec = [('GP','german',4),
 # ('MSIS','msis',1),
 # ('Geogrp','geogr',2),
 # ('Hist','hist',3)]
-entgroups2 = []
 # insert_groups(con,entitiesgroups)
 # insert_specialities(con,entspec)
 entstud = [('Bob','Bobsurn',datetime.date(2004,12,2),'89182368213',11),
@@ -156,13 +155,13 @@ def selfomstud(con,name):
     curs.execute('select id from Students where name='+'"'+name+'"')
     print("select id students with name="+name)
     print(curs.fetchall())
-selfomstud(con,'Bob')
-selfomstud(con,'Dave')
+# selfomstud(con,'Bob')
+# selfomstud(con,'Dave')
 def studentsbyid(con,id):
     curs=con.cursor()
     curs.execute('select surname,birthday from Students where id='+str(id))
     print("select surname and birthday student with id="+str(id))
-    print(curs.fetchall())
+#     print(curs.fetchall())
 # studentsbyid(con,10)
 # studentsbyid(con,17)
 def delbyid(con,id):
@@ -190,3 +189,64 @@ def updateName(con,name,newname):
     
 # updateName(con,"Bot","RealBot")
 # updateName(con,"John","Sam")
+def addinit():
+    curs=con.cursor()
+    curs.execute("""create table Teachers(ID integer 
+                 primary key autoincrement,
+                 name text NOT NULL,
+                 lastname text,
+                 phone text
+                 )""")
+    curs.execute("""create table Employees(teacher_id integer,
+                 Speciality text,
+                 spec_id integer,
+                 position text,
+                 constraint empl_spec_fk foreign key (spec_id) 
+                 references Specialities (ID) on delete cascade,
+                 constraint empl_teach foreign key (teacher_id)
+                 references Teachers (ID) on delete cascade) 
+                 """)
+
+def insert_teachers(con,entities):
+    curs=con.cursor()
+    for ent in entities:
+            curs.execute('''insert into Teachers (name,lastname,phone)
+                         values(?,?,?)''',ent)
+    con.commit()
+entteach = [
+    ('Bob','Bob','89181358315'),
+    ('Teacher2','Lastname2','89189258513'),
+    ('Teacher3','Lastname3','89609268512'),
+    ('Mike','Lastname4','89187368512'),
+    ('John','Lastname5','89189222345')
+]
+# insert_teachers(con,entteach)
+
+def insert_employees(con,ent):
+    curs=con.cursor()
+    for ent in ent:
+            curs.execute('''insert into Employees(teacher_id,Speciality,spec_id,position)
+                         values(?,?,?,?)''',ent)
+    con.commit()
+    
+entemployyes =[(1,'FIIT',1,'assistant'),
+               (2,'Geogrp',5,'professor/lecturer'),
+               (3,'MSIS',4,'manager'),
+               (4,'CT',9,'assistant'),
+               (5,'PI',3,'docent/lecturer')
+]
+# insert_employees(con,entemployyes)
+
+def request(year):
+    curs=con.cursor()
+    curs.execute('select ID from Sets where year='+'"'+str(year)+'"')
+    id=list(map(lambda x: x[0],curs.fetchall()))
+    id2=list()
+    for ids in id:
+        curs.execute('select ID from Groups where set_id='+'"'+str(ids)+'"')
+        id2+=list(map(lambda x: x[0],curs.fetchall()))
+    for ids in id2:
+        curs.execute('select name,surname from Students where group_id='+'"'+str(ids)+'"')
+        print(curs.fetchall())
+request(2020)
+    
