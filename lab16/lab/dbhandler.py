@@ -37,5 +37,34 @@ class Stud_table():
         cursor.execute (f'delete from Students where {del_by}="{del_what}"')
         self.con.commit()
 
+class Facult_table():
+    def __init__(self) -> None:
+        self.con = sqlite3.connect('/home/mzzmor/pyth/lab15/lab15.db')
+    def all_writings(self):
+        curs = self.con.cursor()
+        curs.execute('select * from Faculties')
+        l=curs.fetchall()
+        begin:list = []
+        for strgs in l:
+            s = ' '.join(map(str,strgs))
+            begin.append(s)
+        return str(begin) 
+
+    def insert(self, name,descript):
+        cursor = self.con.cursor()
+        cursor.execute(f'insert into Faculties (name,descript) values ("{name}","{descript}")')
+        self.con.commit() 
+        
+    def update(self, updby,updparam, dict):
+        cursor = self.con.cursor()
+        sets = d_str(dict)
+        cursor.execute(f'update Faculties set {sets} where {updby}="{updparam}"')
+        self.con.commit()
+        
+    def delete(self,del_by,del_what):
+        cursor = self.con.cursor()
+        cursor.execute (f'delete from Faculties where {del_by}="{del_what}"')
+        self.con.commit()
+        
 
     
