@@ -1,10 +1,10 @@
 #!/usr/bin/python   
-import sys, os, html, http.cookies,cgi
+import sys, os, html,cgi
 current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
-from  dbhandler import Stud_DB 
-sd = Stud_DB()
+from  dbhandler import Stud_table
+stud = Stud_table()
 
 
 form = cgi.FieldStorage()
@@ -12,29 +12,34 @@ action = form.getfirst("action", "")
 if action == "publish":
   text = form.getfirst("textoviytest", "")
   text = html.escape(text)
-  sd.write_in_test(text)
+  stud.write_in_test(text)
 elif action == 'Input':
   name = html.escape(form.getfirst("name",''))
   surname = html.escape(form.getfirst("surname",''))
-  birthday = html.escape(form.getfirst("birthday",''))
+  birthday = form.getfirst("birthday",'')
   phone = html.escape(form.getfirst("phone",''))
   group_id = html.escape(form.getfirst("group_id",''))
-  sd.write_in_test(f"name -{name}, surname - {surname}, birtday - {birthday},phone - {phone}, group_id - {group_id}")
+  stud.insert(name, surname,str(birthday),phone, group_id)
 elif action == 'remove':
   bywhat = html.escape(form.getfirst('selector',''))
-  somewhat = html.escape(form.getfirst('delete',''))
-  sd.write_in_test(f'by what - {bywhat}, somewhat - {somewhat}')
+  what = html.escape(form.getfirst('delete',''))
+  stud.delete(bywhat,what)
 elif action == 'Update':
-  updateby = html.escape(form.getfirst('updselector'))
-  name = html.escape(form.getfirst("uname",''))
-  surname = html.escape(form.getfirst("usurname",''))
-  birthday = html.escape(form.getfirst("ubirthday",''))
-  phone = html.escape(form.getfirst("uphone",''))
-  group_id = html.escape(form.getfirst("ugroup_id",''))
-  sd.write_in_test(f"updby - {updateby} ,name -{name}, surname - {surname}, birtday - {birthday},phone - {phone}, group_id - {group_id}")
+  pred, res={},{}
+  updateby= html.escape(form.getfirst('updselector'))
+  updparam = html.escape(form.getfirst('updparam'))
+  pred['name'] = html.escape(form.getfirst("uname",''))
+  pred['surname'] = html.escape(form.getfirst("usurname",''))
+  pred['birthday'] = html.escape(form.getfirst("ubirthday",''))
+  pred['phone'] = html.escape(form.getfirst("uphone",''))
+  pred['group_id'] = html.escape(form.getfirst("ugroup_id",''))
+  for key, val in pred.items():
+    if val!='':
+      res[key]=val
+  stud.update(updateby,updparam,res)
 
 
-strings2 = sd.all_writings()
+strings2 = stud.all_writings()
 pattern2 = '''
 <!DOCTYPE HTML>
 <html>
@@ -97,6 +102,9 @@ pattern2 = '''
    #birtd {
   width:13.3em;
 }
+  #deleter{
+    width:6em
+  }
 #updater
 {
   width:10em;
@@ -118,9 +126,10 @@ font: italic small-caps bold 19px/1 cursive;}
 <a href="http://localhost:8000/cgi-bin/begin_page.py">Back home</a><br><br>
   Other pages:
   <ul>
-            <li> <a href="http://localhost:8000/cgi-bin/begin_page.py">Back home</a></li>
-            <li>second link(change)</li>
-            <li>third link(change)</li>
+            <li> <a href="http://localhost:8000/cgi-bin/faculties_page.py">Faculties</a></li>
+            <li> <a href="http://localhost:8000/cgi-bin/sets_page.py">Sets</a></li>
+            <li> <a href="http://localhost:8000/cgi-bin/specialities_page.py">Specialities</a></li>
+            <li> <a href="http://localhost:8000/cgi-bin/groups_page.py">Groups</a></li>
         <ul>
   </div>
   <div id="input">
@@ -131,12 +140,13 @@ font: italic small-caps bold 19px/1 cursive;}
 <legend>Student data</legend>
 Name:<br> <input type = "text" name = "name" placeholder="Bob"/><br>
 Surname:<br> <input type ="text" name ='surname' placeholder = "Doe"/><br>
-Birthday:<br> <input type = "date" id=birtd name ="birtday"/><br>
+Birthday:<br> <input type = "date" id=birtd name ="birthday"/><br>
 Phone:<br> <input type = "tel" name ="phone" placeholder = "+79186158233" pattern ="\+7[0-9]{10}"/><br>
 Group_id:<br> <input type name = "group_id" placeholder ="1"/><br><br>               
 <input type = "submit" id =subm name = 'action' value = 'Input' /><br><br>
 </fieldset>
 <h3>Delete</h3>
+<fieldset>
 delete by<br> 
 <select name = 'selector'>
   <option>id</option>
@@ -144,8 +154,9 @@ delete by<br>
   <option>surname</option>
 </select>
 <br><br>
-<input type = "text" name = "delete"/> 
+<input type = "text" id = 'deleter' name = "delete"/> 
 <input type = "submit" name = 'action' value = 'remove'/>
+</fieldset>
   </form>
   </div>
   <div id = "test"> <h3>Output</h3>
@@ -174,9 +185,9 @@ function output() {
   <option>name</option>
   <option>surname</option>
 </select>
-<input type = "text" id = "updateparam"/> 
+<input type = "text" id = "updateparam" name ='updparam'/> 
 <br><br>
-change row's value<br><br>
+change column's value<br><br>
 Name:<br> <input type = "text" name = "uname" placeholder="Bob"/><br>
 Surname:<br> <input type ="text" name =usurname placeholder = "Doe"/><br>
 Birthday:<br> <input type = "date" id=birtd name ="ubirtday"/><br>
@@ -188,8 +199,6 @@ Group_id:<br> <input type name = "ugroup_id" placeholder ="1"/><br><br>
  </body>
 </html>
 '''
-
-
 
 print('Content-type: text/html\n')
 print(pattern2)
