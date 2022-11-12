@@ -9,11 +9,7 @@ stud = Stud_table()
 
 form = cgi.FieldStorage()
 action = form.getfirst("action", "")
-if action == "publish":
-  text = form.getfirst("textoviytest", "")
-  text = html.escape(text)
-  stud.write_in_test(text)
-elif action == 'Input':
+if action == 'Input':
   name = html.escape(form.getfirst("name",''))
   surname = html.escape(form.getfirst("surname",''))
   birthday = form.getfirst("birthday",'')
