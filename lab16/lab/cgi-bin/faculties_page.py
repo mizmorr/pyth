@@ -24,7 +24,7 @@ elif action == 'Update':
   pred, res={},{}
   updateby= html.escape(form.getfirst('updselector'))
   updparam = html.escape(form.getfirst('updparam'))
-  pred['name'] = html.escape(form.getfirst("unama",''))
+  pred['name'] = html.escape(form.getfirst("uname",''))
   pred['descript'] = html.escape(form.getfirst("udescript",''))
   for key, val in pred.items():
     if val!='':
