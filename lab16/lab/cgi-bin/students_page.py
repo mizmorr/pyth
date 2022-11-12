@@ -184,12 +184,15 @@ function output() {
 <input type = "text" id = "updateparam" name ='updparam'/> 
 <br><br>
 change column's value<br><br>
+<fieldset>
+<legend>Update data</legend>
 Name:<br> <input type = "text" name = "uname" placeholder="Bob"/><br>
 Surname:<br> <input type ="text" name =usurname placeholder = "Doe"/><br>
 Birthday:<br> <input type = "date" id=birtd name ="ubirtday"/><br>
 Phone:<br> <input type = "tel" name ="uphone" placeholder = "+79186158233" pattern ="\+7[0-9]{10}"/><br>
-Group_id:<br> <input type name = "ugroup_id" placeholder ="1"/><br><br>               
+Group_id:<br> <input type name = "ugroup_id" placeholder ="1"/><br><br>   
 <input type = "submit" id =updater name = 'action' value = 'Update' /><br><br>
+</fieldset>            
   </form>
   </div>
  </body>
