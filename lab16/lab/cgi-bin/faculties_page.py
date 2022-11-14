@@ -59,7 +59,7 @@ pattern = '''
     left: 172px; 
     bottom:200px;
     width:356px;
-    background: #7fb3d5 ;
+    background: #fae0e5 ;
     border-right: 2px solid #34495e ;
    }
    #update
@@ -68,21 +68,21 @@ pattern = '''
     left: 550px; 
     bottom:203px;
     width:350px;
-    background:  #7fb3d5 ;
+    background:  #fae0e5 ;
      
    }
    #test{
     top: 82px; 
     left: 920px; 
     bottom:200px;
-    background:  #7fb3d5 ;
+    background:  #fae0e5 ;
     right:0px;
     border-left:2px solid #34495e ;
    }
    #botm{
      top:760px;
      bottom:0px;
-     background:#7fb3d5 ;
+     background:#fae0e5 ;
      width:2000px;
      border-top:2px solid  #34495e;
    }
